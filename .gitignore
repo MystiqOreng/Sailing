@@ -1,0 +1,9 @@
+# Copyrighted reference material (100 Magic Miles guide photos) — do NOT publish
+*.HEIC
+/reference/
+
+# Local Claude Code settings
+.claude/settings.local.json
+
+# macOS
+.DS_Store

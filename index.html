@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Sail Whitsundays 3D</title>
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three.module.js",
+    "three/addons/controls/OrbitControls.js": "./vendor/OrbitControls.js"
+  }
+}
+</script>
+</head>
+<body>
+  <canvas id="scene3d"></canvas>
+
+  <div id="chart-wrap">
+    <canvas id="chart"></canvas>
+    <div id="chart-toolbar">
+      <button id="btn-zin" class="chip">＋</button>
+      <button id="btn-zout" class="chip">－</button>
+      <button id="btn-center" class="chip">◎ BOAT</button>
+      <span id="chart-tools"></span>
+    </div>
+  </div>
+
+  <header id="topbar">
+    <h1>Sail Whitsundays <span>3D</span></h1>
+    <div class="bar-group">
+      <span id="clock">09:00</span>
+      <button id="btn-pause">⏸</button>
+      <button id="btn-restart" title="Restart">↺</button>
+      <span id="timescales"></span>
+    </div>
+    <div class="bar-group">
+      <button id="btn-top" title="Top-down aerial view">TOP</button>
+      <button id="btn-chart">CHART</button>
+      <button id="btn-settings">⚙</button>
+    </div>
+  </header>
+
+  <div id="instruments"></div>
+  <div id="helm"></div>
+  <div id="notices"></div>
+  <aside id="settings"></aside>
+
+  <div id="loading">Loading charts…</div>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

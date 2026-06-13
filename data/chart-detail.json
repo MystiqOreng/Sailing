@@ -1,0 +1,646 @@
+{
+  "_comment": "Hand-digitised navigation detail from '100 Magic Miles' sketch maps (photos in /reference) and AUS 252. Approximate positions - NOT FOR REAL NAVIGATION. Tune current zones here: floodDirDeg is the direction (deg true) the FLOOD stream sets TOWARDS; maxSpringKn is peak spring rate; radiusM is the gaussian falloff radius.",
+  "currentZones": [
+    {
+      "name": "Whitsunday Passage",
+      "lon": 148.87,
+      "lat": -20.23,
+      "radiusM": 9000,
+      "floodDirDeg": 185,
+      "maxSpringKn": 1.2
+    },
+    {
+      "name": "Solway Passage",
+      "lon": 149.046,
+      "lat": -20.305,
+      "radiusM": 1300,
+      "floodDirDeg": 170,
+      "maxSpringKn": 3
+    },
+    {
+      "name": "Hook Passage",
+      "lon": 148.958,
+      "lat": -20.158,
+      "radiusM": 1200,
+      "floodDirDeg": 200,
+      "maxSpringKn": 2.2
+    },
+    {
+      "name": "Fitzalan Passage",
+      "lon": 148.963,
+      "lat": -20.335,
+      "radiusM": 1100,
+      "floodDirDeg": 250,
+      "maxSpringKn": 2
+    },
+    {
+      "name": "Dent Passage",
+      "lon": 148.935,
+      "lat": -20.348,
+      "radiusM": 1200,
+      "floodDirDeg": 180,
+      "maxSpringKn": 2
+    },
+    {
+      "name": "The Narrows (Long Island)",
+      "lon": 148.852,
+      "lat": -20.365,
+      "radiusM": 1500,
+      "floodDirDeg": 150,
+      "maxSpringKn": 1.6
+    },
+    {
+      "name": "Unsafe Passage",
+      "lon": 148.82,
+      "lat": -20.265,
+      "radiusM": 900,
+      "floodDirDeg": 190,
+      "maxSpringKn": 1.5
+    },
+    {
+      "name": "Hunt Channel",
+      "lon": 148.932,
+      "lat": -20.27,
+      "radiusM": 900,
+      "floodDirDeg": 175,
+      "maxSpringKn": 1
+    },
+    {
+      "name": "Gulnare-Henning",
+      "lon": 148.955,
+      "lat": -20.318,
+      "radiusM": 1400,
+      "floodDirDeg": 230,
+      "maxSpringKn": 1.4
+    },
+    {
+      "name": "Pine Island Channel",
+      "lon": 148.86,
+      "lat": -20.39,
+      "radiusM": 1400,
+      "floodDirDeg": 160,
+      "maxSpringKn": 1.8
+    },
+    {
+      "name": "Lindeman-Shaw",
+      "lon": 149.06,
+      "lat": -20.46,
+      "radiusM": 3000,
+      "floodDirDeg": 195,
+      "maxSpringKn": 1.3
+    },
+    {
+      "name": "Open water background",
+      "lon": 149.05,
+      "lat": -20.15,
+      "radiusM": 20000,
+      "floodDirDeg": 190,
+      "maxSpringKn": 0.5
+    }
+  ],
+  "shoals": [
+    {
+      "name": "French Shoal",
+      "lon": 149.03,
+      "lat": -20.256,
+      "radiusM": 500,
+      "minDepthM": 2
+    },
+    {
+      "name": "Hill Inlet sands",
+      "lon": 149.022,
+      "lat": -20.236,
+      "radiusM": 600,
+      "minDepthM": 0.5
+    },
+    {
+      "name": "Lagoon Rock",
+      "lon": 149.02,
+      "lat": -20.268,
+      "radiusM": 150,
+      "minDepthM": 0
+    },
+    {
+      "name": "Shute Hbr small craft area",
+      "lon": 148.788,
+      "lat": -20.294,
+      "radiusM": 350,
+      "minDepthM": 1.5
+    },
+    {
+      "name": "Orion Shoal",
+      "lon": 149.085,
+      "lat": -20.452,
+      "radiusM": 400,
+      "minDepthM": 3
+    },
+    {
+      "name": "Surprise Rock (Solway)",
+      "lon": 149.041,
+      "lat": -20.318,
+      "radiusM": 120,
+      "minDepthM": 0.5
+    },
+    {
+      "name": "Fitzalan reef patch",
+      "lon": 148.957,
+      "lat": -20.332,
+      "radiusM": 250,
+      "minDepthM": 1.5
+    },
+    {
+      "name": "Plum Pudding shallows",
+      "lon": 148.913,
+      "lat": -20.357,
+      "radiusM": 350,
+      "minDepthM": 2
+    },
+    {
+      "name": "Bird-Langford reef",
+      "lon": 148.88,
+      "lat": -20.077,
+      "radiusM": 700,
+      "minDepthM": 1
+    }
+  ],
+  "anchorages": [
+    {
+      "id": "pioneer",
+      "name": "Pioneer Rocks (Airlie Beach)",
+      "lon": 148.71805,
+      "lat": -20.25243,
+      "approachDeg": 55
+    },
+    {
+      "id": "shute",
+      "name": "Shute Harbour",
+      "lon": 148.7895,
+      "lat": -20.2925,
+      "approachDeg": 70
+    },
+    {
+      "id": "happy",
+      "name": "Happy Bay (Long I.)",
+      "lon": 148.852,
+      "lat": -20.342,
+      "approachDeg": 300
+    },
+    {
+      "id": "sandy-molle",
+      "name": "Sandy Bay (S. Molle)",
+      "lon": 148.8387,
+      "lat": -20.2816,
+      "approachDeg": 180
+    },
+    {
+      "id": "bauer",
+      "name": "Bauer Bay (S. Molle)",
+      "lon": 148.835,
+      "lat": -20.255,
+      "approachDeg": 330
+    },
+    {
+      "id": "cid",
+      "name": "Cid Harbour (Sawmill Bay)",
+      "lon": 148.939,
+      "lat": -20.258,
+      "approachDeg": 280
+    },
+    {
+      "id": "nara",
+      "name": "Nara Inlet",
+      "lon": 148.9059,
+      "lat": -20.1668,
+      "approachDeg": 200
+    },
+    {
+      "id": "macona",
+      "name": "Macona Inlet",
+      "lon": 148.928,
+      "lat": -20.155,
+      "approachDeg": 190
+    },
+    {
+      "id": "stonehaven",
+      "name": "Stonehaven",
+      "lon": 148.905,
+      "lat": -20.092,
+      "approachDeg": 270
+    },
+    {
+      "id": "bluepearl",
+      "name": "Blue Pearl Bay (Hayman)",
+      "lon": 148.872,
+      "lat": -20.053,
+      "approachDeg": 270
+    },
+    {
+      "id": "butterfly",
+      "name": "Butterfly Bay (Hook)",
+      "lon": 148.927,
+      "lat": -20.057,
+      "approachDeg": 0
+    },
+    {
+      "id": "luncheon",
+      "name": "Luncheon Bay (Hook)",
+      "lon": 148.945,
+      "lat": -20.06,
+      "approachDeg": 10
+    },
+    {
+      "id": "maureens",
+      "name": "Maureen's Cove (Hook)",
+      "lon": 148.938,
+      "lat": -20.059,
+      "approachDeg": 0
+    },
+    {
+      "id": "mackerel",
+      "name": "Mackerel Bay (Hook)",
+      "lon": 148.968,
+      "lat": -20.08,
+      "approachDeg": 80
+    },
+    {
+      "id": "saba",
+      "name": "Saba Bay (Hook)",
+      "lon": 148.965,
+      "lat": -20.128,
+      "approachDeg": 120
+    },
+    {
+      "id": "cateran",
+      "name": "Cateran Bay (Border I.)",
+      "lon": 149.0263,
+      "lat": -20.1554,
+      "approachDeg": 350
+    },
+    {
+      "id": "tongue",
+      "name": "Tongue Bay",
+      "lon": 149.012,
+      "lat": -20.243,
+      "approachDeg": 40
+    },
+    {
+      "id": "whitehaven",
+      "name": "Whitehaven Beach",
+      "lon": 149.04,
+      "lat": -20.2804,
+      "approachDeg": 60
+    },
+    {
+      "id": "chalkies",
+      "name": "Chalkies Beach (Haslewood)",
+      "lon": 149.062,
+      "lat": -20.289,
+      "approachDeg": 250
+    },
+    {
+      "id": "catseye",
+      "name": "Catseye Bay (Hamilton)",
+      "lon": 148.966,
+      "lat": -20.344,
+      "approachDeg": 30
+    },
+    {
+      "id": "gulnare",
+      "name": "Gulnare Inlet",
+      "lon": 148.9806,
+      "lat": -20.315,
+      "approachDeg": 140
+    },
+    {
+      "id": "boatport",
+      "name": "Boat Port (Lindeman)",
+      "lon": 149.0286,
+      "lat": -20.4443,
+      "approachDeg": 0
+    },
+    {
+      "id": "neck",
+      "name": "Neck Bay (Shaw I.)",
+      "lon": 149.0693,
+      "lat": -20.483,
+      "approachDeg": 330
+    }
+  ],
+  "labels": [
+    {
+      "name": "WHITSUNDAY ISLAND",
+      "lon": 148.955,
+      "lat": -20.275,
+      "size": 15
+    },
+    {
+      "name": "HOOK ISLAND",
+      "lon": 148.93,
+      "lat": -20.11,
+      "size": 14
+    },
+    {
+      "name": "Hayman I.",
+      "lon": 148.88,
+      "lat": -20.048,
+      "size": 11
+    },
+    {
+      "name": "Border I.",
+      "lon": 149.03,
+      "lat": -20.165,
+      "size": 10
+    },
+    {
+      "name": "Haslewood I.",
+      "lon": 149.075,
+      "lat": -20.29,
+      "size": 10
+    },
+    {
+      "name": "Hamilton I.",
+      "lon": 148.952,
+      "lat": -20.352,
+      "size": 11
+    },
+    {
+      "name": "Dent I.",
+      "lon": 148.928,
+      "lat": -20.36,
+      "size": 9
+    },
+    {
+      "name": "Henning I.",
+      "lon": 148.94,
+      "lat": -20.312,
+      "size": 9
+    },
+    {
+      "name": "Cid I.",
+      "lon": 148.922,
+      "lat": -20.262,
+      "size": 9
+    },
+    {
+      "name": "Long I.",
+      "lon": 148.862,
+      "lat": -20.365,
+      "size": 11
+    },
+    {
+      "name": "South Molle I.",
+      "lon": 148.84,
+      "lat": -20.265,
+      "size": 10
+    },
+    {
+      "name": "North Molle I.",
+      "lon": 148.8,
+      "lat": -20.225,
+      "size": 10
+    },
+    {
+      "name": "Daydream I.",
+      "lon": 148.812,
+      "lat": -20.253,
+      "size": 8
+    },
+    {
+      "name": "Pine I.",
+      "lon": 148.872,
+      "lat": -20.395,
+      "size": 9
+    },
+    {
+      "name": "Pentecost I.",
+      "lon": 148.998,
+      "lat": -20.392,
+      "size": 9
+    },
+    {
+      "name": "Lindeman I.",
+      "lon": 149.04,
+      "lat": -20.452,
+      "size": 10
+    },
+    {
+      "name": "Shaw I.",
+      "lon": 149.085,
+      "lat": -20.5,
+      "size": 10
+    },
+    {
+      "name": "Whitehaven Beach",
+      "lon": 149.048,
+      "lat": -20.27,
+      "size": 9
+    },
+    {
+      "name": "Whitsunday Passage",
+      "lon": 148.868,
+      "lat": -20.2,
+      "size": 11,
+      "italic": true
+    },
+    {
+      "name": "Solway Passage",
+      "lon": 149.052,
+      "lat": -20.31,
+      "size": 9,
+      "italic": true
+    },
+    {
+      "name": "Hook Passage",
+      "lon": 148.962,
+      "lat": -20.152,
+      "size": 9,
+      "italic": true
+    },
+    {
+      "name": "Dent Passage",
+      "lon": 148.932,
+      "lat": -20.338,
+      "size": 8,
+      "italic": true
+    },
+    {
+      "name": "Fitzalan Passage",
+      "lon": 148.97,
+      "lat": -20.332,
+      "size": 8,
+      "italic": true
+    },
+    {
+      "name": "Unsafe Passage",
+      "lon": 148.818,
+      "lat": -20.27,
+      "size": 8,
+      "italic": true
+    },
+    {
+      "name": "MAINLAND",
+      "lon": 148.745,
+      "lat": -20.34,
+      "size": 13
+    }
+  ],
+  "peaks": [
+    {
+      "name": "Whitsunday Peak",
+      "lon": 148.945,
+      "lat": -20.297,
+      "heightM": 437,
+      "radiusM": 2600
+    },
+    {
+      "name": "Hook Peak",
+      "lon": 148.94,
+      "lat": -20.14,
+      "heightM": 459,
+      "radiusM": 2400
+    },
+    {
+      "name": "Hayman",
+      "lon": 148.882,
+      "lat": -20.052,
+      "heightM": 250,
+      "radiusM": 1100
+    },
+    {
+      "name": "Passage Peak (Hamilton)",
+      "lon": 148.965,
+      "lat": -20.348,
+      "heightM": 230,
+      "radiusM": 1000
+    },
+    {
+      "name": "Long Island Peak",
+      "lon": 148.86,
+      "lat": -20.385,
+      "heightM": 272,
+      "radiusM": 900
+    },
+    {
+      "name": "Mt Jeffreys (S. Molle)",
+      "lon": 148.842,
+      "lat": -20.262,
+      "heightM": 194,
+      "radiusM": 900
+    },
+    {
+      "name": "Mt Chaine (N. Molle)",
+      "lon": 148.798,
+      "lat": -20.222,
+      "heightM": 233,
+      "radiusM": 800
+    },
+    {
+      "name": "Shaw Peak",
+      "lon": 149.09,
+      "lat": -20.508,
+      "heightM": 413,
+      "radiusM": 1800
+    },
+    {
+      "name": "Mt Oldfield (Lindeman)",
+      "lon": 149.038,
+      "lat": -20.452,
+      "heightM": 212,
+      "radiusM": 1200
+    },
+    {
+      "name": "Mosstrooper Pk (Border)",
+      "lon": 149.022,
+      "lat": -20.16,
+      "heightM": 214,
+      "radiusM": 700
+    },
+    {
+      "name": "Haslewood",
+      "lon": 149.08,
+      "lat": -20.295,
+      "heightM": 203,
+      "radiusM": 1300
+    },
+    {
+      "name": "Dent I.",
+      "lon": 148.928,
+      "lat": -20.362,
+      "heightM": 165,
+      "radiusM": 700
+    },
+    {
+      "name": "Babieca Summit (Cid)",
+      "lon": 148.92,
+      "lat": -20.262,
+      "heightM": 204,
+      "radiusM": 600
+    },
+    {
+      "name": "Pentecost",
+      "lon": 148.998,
+      "lat": -20.392,
+      "heightM": 208,
+      "radiusM": 600
+    },
+    {
+      "name": "Conway Range (mainland)",
+      "lon": 148.755,
+      "lat": -20.33,
+      "heightM": 380,
+      "radiusM": 5000
+    },
+    {
+      "name": "Mt Sydney (Hook NW)",
+      "lon": 148.952,
+      "lat": -20.09,
+      "heightM": 390,
+      "radiusM": 1500
+    },
+    {
+      "name": "Whitsunday Cairn (N)",
+      "lon": 148.985,
+      "lat": -20.215,
+      "heightM": 386,
+      "radiusM": 1900
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "shute-whitehaven",
+      "name": "Shute Hbr → Whitehaven (route choice)",
+      "description": "Classic decision: north-about via Hook Passage or south-about via Solway Passage. SE trade 18 kn, spring tides, departing 2h before high water. Watch wind-against-tide in Solway on the ebb.",
+      "originId": "shute",
+      "destinationId": "whitehaven",
+      "windFromDeg": 135,
+      "windKn": 18,
+      "gustiness": 0.4,
+      "tideRangeM": 3.4,
+      "tideClockH": 10.4
+    },
+    {
+      "id": "hamilton-butterfly",
+      "name": "Hamilton → Butterfly Bay",
+      "description": "Beat north up the Whitsunday Passage or thread Hook Passage. SE 15 kn, mid-range tides.",
+      "originId": "catseye",
+      "destinationId": "butterfly",
+      "windFromDeg": 120,
+      "windKn": 15,
+      "gustiness": 0.3,
+      "tideRangeM": 2.4,
+      "tideClockH": 1
+    },
+    {
+      "id": "nara-cateran",
+      "name": "Nara Inlet → Cateran Bay",
+      "description": "Northerly 12 kn against a spring flood through Hook Passage: pick your moment or pick another way.",
+      "originId": "nara",
+      "destinationId": "cateran",
+      "windFromDeg": 10,
+      "windKn": 12,
+      "gustiness": 0.5,
+      "tideRangeM": 3.6,
+      "tideClockH": 8
+    }
+  ]
+}
