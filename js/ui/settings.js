@@ -92,6 +92,23 @@ export class SettingsPanel {
       </section>
 
       <section data-tab="tide" hidden>
+        <label class="row"><input id="set-tideref" type="checkbox" ${s.tideRef?.enabled ? 'checked' : ''}>
+          Use predicted tides (Hamilton Is. reference)</label>
+        <div class="grid" id="tideref-fields">
+          <label class="field">Next high water
+            <input id="set-hw-time" type="time" value="${s.tideRef?.hwTime ?? ''}">
+          </label>
+          <label class="field">HW height (m)
+            <input id="set-hw-h" type="number" step="0.1" min="0" max="6" value="${s.tideRef?.hwHeightM ?? ''}">
+          </label>
+          <label class="field">Next low water
+            <input id="set-lw-time" type="time" value="${s.tideRef?.lwTime ?? ''}">
+          </label>
+          <label class="field">LW height (m)
+            <input id="set-lw-h" type="number" step="0.1" min="0" max="6" value="${s.tideRef?.lwHeightM ?? ''}">
+          </label>
+        </div>
+        <p class="hint" id="tideref-readout"></p>
         <label class="slider-row">Tide range (m) — neaps ↔ springs
           <input id="set-range" type="range" min="12" max="38" value="${s.tideRangeM * 10}">
           <span class="val">${s.tideRangeM.toFixed(1)}</span>
@@ -193,6 +210,35 @@ export class SettingsPanel {
       s.tideRangeM = e.target.value / 10;
       bindVal(e.target, () => s.tideRangeM.toFixed(1)); save();
     };
+
+    // ---- predicted tide (Hamilton Is. reference)
+    const tideRefReadout = $('#tideref-readout');
+    const applyTideRef = () => {
+      s.tideRef = {
+        enabled: $('#set-tideref').checked,
+        hwTime: $('#set-hw-time').value,
+        hwHeightM: $('#set-hw-h').value === '' ? null : +$('#set-hw-h').value,
+        lwTime: $('#set-lw-time').value,
+        lwHeightM: $('#set-lw-h').value === '' ? null : +$('#set-lw-h').value,
+      };
+      this.state.tide.setReference?.(s.tideRef);
+      const r = s.tideRef;
+      if (r.enabled && this.state.tide.ref) {
+        const range = Math.abs(r.hwHeightM - r.lwHeightM);
+        tideRefReadout.textContent =
+          `Range ${range.toFixed(1)} m · stream follows rule of twelfths (1·2·3·3·2·1), ` +
+          `slack at HW/LW, fastest mid-tide.`;
+      } else {
+        tideRefReadout.textContent = r.enabled
+          ? 'Enter both HW and LW time + height to drive the tide.'
+          : 'Using the synthetic range slider below.';
+      }
+      save();
+    };
+    ['#set-tideref', '#set-hw-time', '#set-hw-h', '#set-lw-time', '#set-lw-h']
+      .forEach(sel => { $(sel).oninput = applyTideRef; $(sel).onchange = applyTideRef; });
+    applyTideRef();
+
     $('#set-frozen').onchange = e => { s.tideFrozen = e.target.checked; save(); };
     $('#set-frozen-state').value = s.tideFrozenState;
     $('#set-frozen-state').onchange = e => { s.tideFrozenState = e.target.value; save(); };

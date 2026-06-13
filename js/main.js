@@ -32,11 +32,11 @@ async function init() {
     health: null,
     destination: null,
     route: [],            // chart waypoints (judgement aid, no ETA by design)
-    track: [],            // breadcrumb of past positions for the nav overlay
     simTime: 9 * 3600,    // sim clock, seconds since midnight
     paused: false,
   };
   state.health = new Health(events);
+  state.tide.setReference?.(settings.tideRef); // predicted-tide mode if enabled
   const hazards = new Hazards(settings, events);
 
   // ---- scenario loader
@@ -56,19 +56,18 @@ async function init() {
     state.boat.setPosition(o.x, o.z, o.approachDeg ?? 0);
     state.destination = { x: d.x, z: d.z, name: d.name, id: d.id };
     state.route.length = 0;
-    state.track.length = 0;
     events.emit('notice', { text: sc.name, kind: 'info' });
   }
 
-  // default situation: off Pioneer Rocks (Airlie Beach), bound for Whitehaven
+  // default situation: free sailing off Pioneer Rocks (Airlie Beach), no set
+  // destination. Start on a flooding tide so the tidal streams are visible.
   function defaultStart() {
     lastScenarioId = null;
     const o = world.anchorageById('pioneer');
-    const d = world.anchorageById('whitehaven');
     state.boat.setPosition(o.x, o.z, o.approachDeg ?? 0);
-    state.destination = { x: d.x, z: d.z, name: d.name, id: d.id };
+    state.destination = null;
     state.route.length = 0;
-    state.track.length = 0;
+    state.tide.setClockHours(9.3); // near peak flood
   }
 
   function restart() {
@@ -150,6 +149,28 @@ async function init() {
   clearBtn.className = 'chip';
   clearBtn.onclick = () => { state.route.length = 0; };
   tools.appendChild(clearBtn);
+
+  // basemap cycle: offline canvas chart → OSM → Esri satellite (both online
+  // modes add OpenSeaMap seamarks and far richer reef detail)
+  const baseModes = [
+    { id: 'offline', label: 'CHART' },
+    { id: 'osm', label: 'OSM' },
+    { id: 'sat', label: 'SAT' },
+  ];
+  const baseBtn = document.createElement('button');
+  baseBtn.className = 'chip';
+  const syncBaseBtn = () => {
+    const m = baseModes.find(b => b.id === chart.baseMode) ?? baseModes[0];
+    baseBtn.textContent = '🗺 ' + m.label;
+    baseBtn.classList.toggle('on', chart.baseMode !== 'offline');
+  };
+  baseBtn.onclick = () => {
+    const i = baseModes.findIndex(b => b.id === chart.baseMode);
+    chart.setBaseMode(baseModes[(i + 1) % baseModes.length].id);
+    syncBaseBtn();
+  };
+  syncBaseBtn();
+  tools.appendChild(baseBtn);
   $('#btn-center').onclick = () => chart.centerOnBoat();
   $('#btn-zin').onclick = () => chart.zoomBy(0.6);
   $('#btn-zout').onclick = () => chart.zoomBy(1 / 0.6);
@@ -183,12 +204,17 @@ async function init() {
   defaultStart();
   if (!localStorage.getItem('sail-whitsundays-visited')) {
     localStorage.setItem('sail-whitsundays-visited', '1');
-    events.emit('notice', { text: 'Bound for Whitehaven — open the chart and judge the tide.', kind: 'info' });
+    events.emit('notice', { text: 'Free sailing off Airlie Beach — open the chart and judge wind and tide.', kind: 'info' });
   }
 
   // dev/test shortcuts: #chart opens the chart, #close zooms the camera in,
   // #cat starts on the catamaran, #top starts in the aerial view
   if (location.hash === '#chart') $('#btn-chart').click();
+  if (location.hash === '#osm' || location.hash === '#sat') {
+    $('#btn-chart').click();
+    chart.setBaseMode(location.hash.slice(1));
+    syncBaseBtn();
+  }
   if (location.hash === '#top') $('#btn-top').click();
   if (location.hash === '#tack') setTimeout(() => $('#h-tack').click(), 3000);
   if (location.hash === '#close' || location.hash === '#cat') scene.camera.position.set(14, 6, 18);
@@ -211,20 +237,10 @@ async function init() {
         const dt = Math.min(simDt, 0.5);
         simDt -= dt;
         state.wind.update(state.simTime);
-        state.tide.advance(dt);
+        state.tide.advance(dt, state.simTime);
         state.boat.update(dt, state.wind, state.tide, world, events);
         state.health.update(dt, state.boat, state.wind);
         hazards.update(dt);
-      }
-
-      // record the track breadcrumb (a big jump means a teleport/restart)
-      const tr = state.track;
-      const lp = tr[tr.length - 1];
-      const moved = lp ? Math.hypot(state.boat.x - lp.x, state.boat.z - lp.z) : Infinity;
-      if (moved > 600) { tr.length = 0; tr.push({ x: state.boat.x, z: state.boat.z }); }
-      else if (moved > 15) {
-        tr.push({ x: state.boat.x, z: state.boat.z });
-        if (tr.length > 2000) tr.shift();
       }
     }
 
@@ -232,7 +248,6 @@ async function init() {
     if (!chartWrap.classList.contains('open')) {
       boat3d.update(state.boat, state.simTime);
       scene.setDestination(state.destination);
-      scene.updateNav(state.boat, state.track);
       scene.follow(state.boat);
       scene.update(realDt, state.simTime, state.boat,
         state.wind.speedKn, state.wind.fromDeg, state.boat.chop);

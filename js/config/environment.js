@@ -42,12 +42,16 @@ export const DEFAULT_SETTINGS = {
   speedMultiplier: 1.0,      // global sailing speed slider 0.6–1.4
   assistance: 'auto',        // 'auto' = auto sail trim, 'manual' = sheet slider
   hazardFrequency: 'off',    // off | rare | occasional  (spawning stubbed)
-  overlays: { current: true, wind: false, laylines: true, route: true, labels: true, graticule: false },
+  overlays: { current: true, wind: true, laylines: true, route: true, labels: true, graticule: false },
   windFromDeg: 135,
   windKn: 16,
   gustiness: 0.4,
   tideRangeM: 2.8,
   tideFrozen: false,
   tideFrozenState: 'flood',  // flood | ebb | slack
+  // Predicted tide (Hamilton Island reference): when enabled the stream rate
+  // and height follow the next HW/LW the user enters (rule-of-twelfths curve)
+  // instead of the synthetic range slider.
+  tideRef: { enabled: false, hwTime: '', hwHeightM: null, lwTime: '', lwHeightM: null },
   timeScale: 4,
 };

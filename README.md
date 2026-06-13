@@ -44,8 +44,9 @@ server {
 | Sheet (manual trim mode) | SHEET slider | — |
 | Orbit camera | drag / two-finger pinch to zoom; zoom right in for a sail view with telltales | mouse drag + wheel |
 | Top-down aerial view | **TOP** button; locked north-up like the chart — anchorage/place labels, shallow patches, a chart-style boat marker and a downwind WIND arrow | — |
-| Nav overlays (both 3D views) | pink past track, red dashed heading line, white course-over-ground band | — |
 | Chart | **CHART** button; drag to pan, pinch/wheel to zoom | — |
+| Basemap | **🗺** chip cycles offline canvas chart → OSM → Esri satellite (online modes add OpenSeaMap seamarks + richer reef detail) | — |
+| Wind / tide overlays | **WIND** = animated blue streamlines (shelter in island lees, funnel through passages); **CUR** = red tidal-set arrows graded by strength | — |
 | Add route waypoints | enable **ROUTE+**, tap the chart | — |
 | Time compression | 1× / 4× / 12× / 20×, pause | — |
 | Restart | **↺** button; back to the start (or reloads the active scenario) | — |
@@ -87,6 +88,15 @@ come from hand-digitised zones (Solway, Hook, Fitzalan, Dent and Unsafe
 Passages, The Narrows, Hunt Channel…) with directions and spring rates taken
 from the *100 Magic Miles* sketch maps: **streams flood south, ebb north**.
 A practice override freezes the tide at max flood, max ebb, or slack.
+
+**Predicted tides:** in Settings → Tide you can enter the **next high and low
+water (time + height) at the Hamilton Island reference**. The model then
+builds a half-cycle between those events and reads height and stream straight
+off it — a raised-cosine curve whose rate of change traces the **rule of
+twelfths** (1·2·3·3·2·1: slack at the turns, fastest at mid-tide). The HW−LW
+range scales the stream rates against the calibrated spring rates, and the
+instrument panel shows live height and time-to-turn. Left disabled, the
+synthetic range slider drives the tide as before.
 
 ## Navigation gameplay
 

@@ -94,10 +94,13 @@ canvas#scene3d { position: fixed; inset: 0; width: 100%; height: 100%; display: 
   display: none; z-index: 8; background: #cfe2ec;
 }
 #chart-wrap.open { display: block; }
-#chart { width: 100%; height: 100%; display: block; touch-action: none; }
+#chart-osm { position: absolute; inset: 0; z-index: 0; display: none; background: #cfe2ec; }
+#chart { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; z-index: 1; background: transparent; }
 #chart-toolbar {
-  position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; flex-wrap: wrap; max-width: 70%;
+  position: absolute; top: 10px; left: 10px; z-index: 3; display: flex; gap: 6px; flex-wrap: wrap; max-width: 70%;
 }
+#chart-osm .ol-attribution { font-size: 10px; bottom: 4px; right: 4px; }
+#chart-osm .ol-attribution button { display: none; }
 .chip {
   min-width: 48px; height: 42px; padding: 0 12px; border-radius: 8px; font-size: 12px; font-weight: 700;
   background: rgba(14, 25, 37, 0.82); color: var(--text); border: 1px solid var(--panel-edge); cursor: pointer;

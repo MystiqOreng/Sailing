@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Sail Whitsundays 3D</title>
+<link rel="stylesheet" href="vendor/ol.css">
 <link rel="stylesheet" href="css/style.css">
 <script type="importmap">
 {
@@ -19,6 +20,7 @@
   <canvas id="scene3d"></canvas>
 
   <div id="chart-wrap">
+    <div id="chart-osm"></div>
     <canvas id="chart"></canvas>
     <div id="chart-toolbar">
       <button id="btn-zin" class="chip">＋</button>
@@ -49,6 +51,7 @@
   <aside id="settings"></aside>
 
   <div id="loading">Loading charts…</div>
+  <script src="vendor/ol.js"></script>
   <script type="module" src="js/main.js"></script>
 </body>
 </html>

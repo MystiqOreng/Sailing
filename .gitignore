@@ -2,6 +2,10 @@
 *.HEIC
 /reference/
 
+# Local design reference / prototype mock (not part of the running app)
+/whitsunday-chart-view.js
+/whitsunday-chart-view.css
+
 # Local Claude Code settings
 .claude/settings.local.json
 

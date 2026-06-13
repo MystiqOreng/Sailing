@@ -4,7 +4,7 @@
 
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { llToWorld, dirToVec, clamp, NM_M } from '../util/geo.js';
+import { llToWorld, dirToVec } from '../util/geo.js';
 
 const SKY = 0xbfd8e8;
 const SEA_DEEP = new THREE.Color(0x12526e);
@@ -42,7 +42,6 @@ export class Scene3D {
     this._buildSea();
     this._buildIslands(world);
     this._buildLabels(world);
-    this._buildNav();
   }
 
   resize(w, h) {
@@ -191,71 +190,6 @@ export class Scene3D {
     this.labels.add(this.windLabel);
 
     this.scene.add(this.labels);
-  }
-
-  // Navigation overlays drawn on the water, visible in both views: the past
-  // track (pink), the heading line (red dashed, where the bow points) and the
-  // course-over-ground projection (white band, where the boat is actually
-  // going — leeway + current included). Updated per frame via updateNav().
-  _buildNav() {
-    this.nav = new THREE.Group();
-
-    this.MAXTRACK = 2000;
-    this.trackGeo = new THREE.BufferGeometry();
-    this.trackGeo.setAttribute('position',
-      new THREE.Float32BufferAttribute(new Float32Array(this.MAXTRACK * 3), 3));
-    this.trackLine = new THREE.Line(this.trackGeo,
-      new THREE.LineBasicMaterial({ color: 0xff5fa8, depthTest: false, transparent: true }));
-    this.trackLine.frustumCulled = false;
-    this.trackLine.renderOrder = 6;
-    this.nav.add(this.trackLine);
-
-    this.courseBand = new THREE.Mesh(
-      new THREE.PlaneGeometry(1, 1).rotateX(-Math.PI / 2),
-      new THREE.MeshBasicMaterial({
-        color: 0xffffff, transparent: true, opacity: 0.26,
-        depthTest: false, side: THREE.DoubleSide,
-      }));
-    this.courseBand.renderOrder = 6;
-    this.nav.add(this.courseBand);
-
-    this.headingGeo = new THREE.BufferGeometry();
-    this.headingGeo.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(6), 3));
-    this.headingLine = new THREE.Line(this.headingGeo,
-      new THREE.LineDashedMaterial({
-        color: 0xff2a2a, dashSize: 26, gapSize: 18,
-        depthTest: false, transparent: true,
-      }));
-    this.headingLine.frustumCulled = false;
-    this.headingLine.renderOrder = 7;
-    this.nav.add(this.headingLine);
-
-    this.scene.add(this.nav);
-  }
-
-  updateNav(boat, track) {
-    // past track
-    const n = Math.min(track.length, this.MAXTRACK);
-    const tp = this.trackGeo.attributes.position;
-    for (let i = 0; i < n; i++) tp.setXYZ(i, track[i].x, 0.8, track[i].z);
-    this.trackGeo.setDrawRange(0, n);
-    tp.needsUpdate = true;
-
-    // heading line (bow direction)
-    const hv = dirToVec(boat.headingDeg);
-    const hp = this.headingGeo.attributes.position;
-    hp.setXYZ(0, boat.x, 1.0, boat.z);
-    hp.setXYZ(1, boat.x + hv.x * 700, 1.0, boat.z + hv.z * 700);
-    hp.needsUpdate = true;
-    this.headingLine.computeLineDistances();
-
-    // COG band: 6-minute projection over ground, same convention as the chart
-    const len = clamp(boat.sogKn * NM_M / 10, 160, 1400);
-    const cv = dirToVec(boat.cogDeg);
-    this.courseBand.visible = boat.sogKn > 0.3;
-    this.courseBand.position.set(boat.x + cv.x * len / 2, 0.9, boat.z + cv.z * len / 2);
-    this.courseBand.rotation.y = (90 - boat.cogDeg) * Math.PI / 180;
-    this.courseBand.scale.set(len, 1, 34);
   }
 
   // Destination marker in the aerial view; cheap no-op unless it changed.
