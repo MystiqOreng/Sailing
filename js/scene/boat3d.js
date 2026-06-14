@@ -107,6 +107,75 @@ function updateTelltales(set, mesh, camber, side, lift, stall, t) {
   }
 }
 
+// Genoa: a large overlapping headsail. Luff runs up the forestay (so it rakes
+// aft), tack at the bow, clew carried aft past the mast so the foot overlaps
+// the main. Built flat in the x-y plane (z carries the camber) from its three
+// corners relative to the tack at the origin; the parent group is rotated
+// about the forestay axis to sheet it. head/clew are passed relative to tack.
+function makeGenoa(head, clew, cols = 12, rows = 12) {
+  const geo = new THREE.BufferGeometry();
+  const verts = [], idx = [], base = [];
+  for (let r = 0; r <= rows; r++) {
+    const v = r / rows;
+    const lx = head.x * v, ly = head.y * v;                  // luff point (tack→head)
+    const rx = clew.x + (head.x - clew.x) * v;               // leech point (clew→head)
+    const ry = clew.y + (head.y - clew.y) * v;
+    for (let c = 0; c <= cols; c++) {
+      const u = c / cols;
+      base.push(lx + (rx - lx) * u, ly + (ry - ly) * u, 0);
+      verts.push(0, 0, 0);
+    }
+  }
+  for (let r = 0; r < rows; r++)
+    for (let c = 0; c < cols; c++) {
+      const a = r * (cols + 1) + c, b = a + 1, d = a + cols + 1, e = d + 1;
+      idx.push(a, b, d, b, e, d);
+    }
+  geo.setIndex(idx);
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(verts, 3));
+  const mesh = new THREE.Mesh(geo, SAIL);
+  mesh.userData = { base, cols, rows, head, clew, scale: Math.hypot(clew.x, clew.y) * 0.12 };
+  return mesh;
+}
+
+function updateGenoa(mesh, camber, luffing, t, side) {
+  const { base, cols, rows, scale } = mesh.userData;
+  const pos = mesh.geometry.attributes.position;
+  let i = 0;
+  for (let r = 0; r <= rows; r++)
+    for (let c = 0; c <= cols; c++, i++) {
+      const u = c / cols, v = r / rows;
+      let z = side * camber * Math.sin(u * Math.PI) * (1 - v * 0.45) * scale;
+      if (luffing) z += Math.sin(t * 14 + v * 9 + u * 4) * 0.18 * (1 - u) * (0.4 + camber);
+      pos.setXYZ(i, base[i * 3], base[i * 3 + 1], z);
+    }
+  pos.needsUpdate = true;
+  mesh.geometry.computeVertexNormals();
+}
+
+function updateGenoaTelltales(set, mesh, camber, side, lift, stall, t) {
+  const { head, clew, scale } = mesh.userData;
+  for (const tt of set) {
+    const u = tt.u, v = tt.v;
+    const lx = head.x * v, ly = head.y * v;
+    const rx = clew.x + (head.x - clew.x) * v, ry = clew.y + (head.y - clew.y) * v;
+    const x0 = lx + (rx - lx) * u, y0 = ly + (ry - ly) * u;
+    const z0 = side * camber * Math.sin(u * Math.PI) * (1 - v * 0.45) * scale;
+    let dx = rx - lx, dy = ry - ly; const dl = Math.hypot(dx, dy) || 1; dx /= dl; dy /= dl;
+    const bad = tt.face === Math.sign(side || 1) ? stall : lift; // leeward face stalls
+    const pos = tt.line.geometry.attributes.position;
+    for (let i = 0; i <= TT_SEGS; i++) {
+      const f = i / TT_SEGS;
+      const flutter = Math.sin(t * (10 + 9 * bad) + f * 6 + v * 7) * f;
+      pos.setXYZ(i,
+        x0 + dx * f * tt.len * (1 - 0.5 * bad),
+        y0 + dy * f * tt.len * (1 - 0.5 * bad) + bad * f * tt.len * 0.5 + flutter * (0.04 + 0.28 * bad),
+        z0 + tt.face * 0.07 + flutter * 0.05);
+    }
+    pos.needsUpdate = true;
+  }
+}
+
 function monohull() {
   const g = new THREE.Group();
   // hull: stretched sphere reads as a fair cruiser hull at distance
@@ -189,17 +258,22 @@ export class Boat3D {
     this.boomGroup.add(this.main);
     this.heelGroup.add(this.boomGroup);
 
-    // jib pivots at the bow
+    // genoa: tack at the bow, luff up the forestay (raked aft), clew carried
+    // aft past the mast so the foot overlaps the main. Sheeted by rotating the
+    // group about the forestay axis (tack→head).
+    const tack = new THREE.Vector3(spec.bowX - 0.3, 1.0, 0);
+    const head = new THREE.Vector3(spec.mastPos.x, 1.0 + spec.mastH * 0.95, 0);
+    const clew = new THREE.Vector3(spec.mastPos.x - spec.bowX * 0.62, 2.6, 0);
     this.jibGroup = new THREE.Group();
-    this.jibGroup.position.set(spec.bowX - 0.4, 1.1, 0);
-    this.jib = makeSail(spec.mastH * 0.78, spec.jibFoot);
-    this.jib.rotation.y = Math.PI;
+    this.jibGroup.position.copy(tack);
+    this.genoaAxis = head.clone().sub(tack).normalize();
+    this.jib = makeGenoa(head.clone().sub(tack), clew.clone().sub(tack));
     this.jibGroup.add(this.jib);
     this.heelGroup.add(this.jibGroup);
 
-    // telltales: jib luff (steering) + main leech (trim/stall)
+    // telltales: genoa luff (steering) + main leech (trim/stall)
     this.jibTT = makeTelltales(this.jib, [
-      { u: 0.15, v: 0.30 }, { u: 0.15, v: 0.52 }, { u: 0.15, v: 0.72 },
+      { u: 0.12, v: 0.28 }, { u: 0.12, v: 0.50 }, { u: 0.12, v: 0.72 },
     ]);
     this.mainTT = makeTelltales(this.main, [
       { u: 0.92, v: 0.45 }, { u: 0.92, v: 0.70 },
@@ -231,19 +305,21 @@ export class Boat3D {
     const side = boat.twaDeg >= 0 ? -1 : 1;
     const boomRad = side * boat.boomDeg * Math.PI / 180;
     this.boomGroup.rotation.y = boomRad;
-    this.jibGroup.rotation.y = side * (boat.boomDeg * 0.85 + 8) * Math.PI / 180;
+    // genoa sheets by swinging the clew to leeward about the forestay axis
+    const genoaSheet = side * (boat.boomDeg * 0.7 + 6) * Math.PI / 180;
+    this.jibGroup.quaternion.setFromAxisAngle(this.genoaAxis, genoaSheet);
 
     // sail shape: flat when hard in or luffing, full when powered
     const power = boat.pos === 'inIrons' ? 0.15 : 0.55 + 0.45 * Math.min(1, boat.awsKn / 18);
     updateSail(this.main, power, boat.luffing, t, side);
-    updateSail(this.jib, power * 0.9, boat.luffing, t, side);
+    updateGenoa(this.jib, power * 0.9, boat.luffing, t, side);
 
     // telltale state from trim quality: + err = eased too far (luff lifts),
     // − err = over-sheeted (leeward stalls); luffing forces the lift
     const err = boat.boomDeg - boat.optBoomDeg;
     const lift = boat.luffing ? 1 : clamp01((err - 6) / 12);
     const stall = clamp01((-err - 6) / 12);
-    updateTelltales(this.jibTT, this.jib, power * 0.9, side, lift, stall, t);
+    updateGenoaTelltales(this.jibTT, this.jib, power * 0.9, side, lift, stall, t);
     updateTelltales(this.mainTT, this.main, power, side, lift, stall, t);
   }
 }
